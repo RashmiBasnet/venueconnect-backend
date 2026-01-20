@@ -16,11 +16,11 @@ export class AuthController {
             }
             const newUser = await userService.registerUser(parsedData.data);
             return res.status(201).json(
-                { succes: true, data: newUser }
+                { success: true, data: newUser }
             );
         } catch (error: Error | any) {
             return res.status(error.statusCode || 500).json(
-                { sucess: false, message: error.message || "Internal Server Error"}
+                { success: false, message: error.message || "Internal Server Error"}
             )
         }
     }
