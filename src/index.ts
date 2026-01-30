@@ -4,11 +4,13 @@ import express, { Application, Request, Response } from "express";
 import bodyParser from "body-parser";
 import dotenv from "dotenv";
 import cors from "cors";
+import path from "path";
 
 dotenv.config();
 console.log(process.env.PORT);
 
-import authRoutes from "./routes/auth.routes";
+import authRouter from "./routes/auth.routes";
+import userRouter from "./routes/user.routes";
 
 const app: Application = express();
 
@@ -20,7 +22,10 @@ let corsOptions = {
 
 app.use(cors(corsOptions));
 
-app.use('/api/auth', authRoutes);
+app.use('/uploads', express.static(path.join(__dirname, '../uploads'))); // static file serving
+
+app.use('/api/auth', authRouter);
+app.use('/api/user', userRouter);
 
 async function start() {
     await connectDatabase();
