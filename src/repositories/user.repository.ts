@@ -4,10 +4,12 @@ export interface IUserRepository {
     createUser(data: Partial<IUser>): Promise<IUser>;
     getAllUsers(): Promise<IUser[]>;
     getUserById(id: String): Promise<IUser | null>;
-    updateUser(id: String, data: Partial<IUser>): Promise<IUser | null>;
-    deleteUser(id: String): Promise<boolean | null>;
+    updateOneUser(id: String, data: Partial<IUser>): Promise<IUser | null>;
+    deleteOneUser(id: String): Promise<boolean | null>;
     
     getUserByEmail(email: String): Promise<IUser | null>;
+
+    uploadProfilePicture(id: string, profilePicture: string): Promise<IUser | null> 
 }
 
 export class UserRepository implements IUserRepository{
@@ -26,12 +28,12 @@ export class UserRepository implements IUserRepository{
         return user;
     }
 
-    async updateUser(id: String, data: Partial<IUser>): Promise<IUser | null> {
+    async updateOneUser(id: String, data: Partial<IUser>): Promise<IUser | null> {
         const updatedUser = await UserModel.findByIdAndUpdate(id, data, {new : true});
         return updatedUser;
     }
 
-    async deleteUser(id: String): Promise<boolean | null> {
+    async deleteOneUser(id: String): Promise<boolean | null> {
         const result = await UserModel.findByIdAndDelete(id);
         return result ? true : false;
     }
@@ -39,6 +41,11 @@ export class UserRepository implements IUserRepository{
     async getUserByEmail(email: String): Promise<IUser | null> {
         const user = await UserModel.findOne({"email": email});
         return user;
+    }
+
+    async uploadProfilePicture(id: string, profilePicture: string): Promise<IUser | null> {
+        const updatedUser = await UserModel.findByIdAndUpdate(id, {profilePicture}, { new : true });
+        return updatedUser;
     }
 
 }
