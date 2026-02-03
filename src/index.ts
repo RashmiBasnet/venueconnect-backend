@@ -11,6 +11,7 @@ console.log(process.env.PORT);
 
 import authRouter from "./routes/auth.routes";
 import userRouter from "./routes/user.routes";
+import adminUserRouter from "./routes/admin/user.routes";
 
 const app: Application = express();
 
@@ -26,6 +27,7 @@ app.use('/uploads', express.static(path.join(__dirname, '../uploads'))); // stat
 
 app.use('/api/auth', authRouter);
 app.use('/api/user', userRouter);
+app.use('/api/admin/users', adminUserRouter);
 
 async function start() {
     await connectDatabase();
