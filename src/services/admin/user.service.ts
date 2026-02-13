@@ -19,9 +19,18 @@ export class AdminUserService {
         return newUser;
     }
 
-    async getAllUsers(){
-        const users = await userRepository.getAllUsers();
-        return users;
+    async getAllUsers({ page, size, search }: { page?: string | undefined, size?: string | undefined, search?: string | undefined }) {
+        const currentPage = page ? parseInt(page) : 1;
+        const currentSize = size ? parseInt(size) : 10;
+        const currentSearch = search || "";
+        const { users, totalUsers } = await userRepository.getAllUsers({ page: currentPage, size: currentSize, search: currentSearch });
+        const pagination = {
+            page: currentPage,
+            size: currentSize,
+            total: totalUsers,
+            totalPages: Math.ceil(totalUsers / currentSize),
+        }
+        return { users, pagination };
     }
 
     async deleteUser(id: string){
