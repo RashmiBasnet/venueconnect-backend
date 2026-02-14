@@ -7,9 +7,9 @@ let userService = new UserService();
 
 export class UserController {
     async getProfile(req: Request, res: Response) {
-        try{
+        try {
             const userId = req.user?._id;
-            if(!userId) {
+            if (!userId) {
                 return res.status(400).json({
                     success: false,
                     message: "User Id not found"
@@ -21,9 +21,9 @@ export class UserController {
                 data: user,
                 message: "User profile fetched successfully"
             });
-        } catch(error: Error | any) {
+        } catch (error: Error | any) {
             return res.status(error.statusCode || 500).json(
-                { success: false, message: error.message || "Internal Server Error"}
+                { success: false, message: error.message || "Internal Server Error" }
             );
         }
     }
@@ -31,20 +31,20 @@ export class UserController {
     async updateProfile(req: Request, res: Response) {
         try {
             const userId = req.user?._id;
-            if(!userId){
+            if (!userId) {
                 return res.status(400).json({
                     success: false,
                     message: "User Id not found"
                 });
             }
             const parsedData = UpdateUserDto.safeParse(req.body);
-            if(!parsedData.success) {
+            if (!parsedData.success) {
                 return res.status(400).json({
                     success: false,
                     message: z.prettifyError(parsedData.error)
                 });
             }
-            if(req.file) {
+            if (req.file) {
                 parsedData.data.profilePicture = `${req.file.filename}`;
             }
             const updatedUser = await userService.updateUser(userId, parsedData.data);

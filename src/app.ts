@@ -17,10 +17,10 @@ app.use(bodyParser.json());
 
 let corsOptions = {
     origin: [
-        'http://localhost:3000', 
+        'http://localhost:3000',
         'http://localhost:3003/',
-        "http://192.168.101.5:3000",
-        "http://192.168.101.5:3003",
+        "http://192.168.18.210:3000",
+        "http://192.168.18.210:3003",
     ],
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
