@@ -10,6 +10,8 @@ console.log(process.env.PORT);
 import authRouter from "./routes/auth.routes";
 import userRouter from "./routes/user.routes";
 import adminUserRouter from "./routes/admin/user.routes";
+import venueRouter from "./routes/venue.routes";
+import adminVenueRouter from "./routes/admin/venue.routes";
 
 const app: Application = express();
 
@@ -34,5 +36,7 @@ app.use('/uploads', express.static(path.join(__dirname, '../uploads'))); // stat
 app.use('/api/auth', authRouter);
 app.use('/api/user', userRouter);
 app.use('/api/admin/users', adminUserRouter);
+app.use("/api/venues", venueRouter);
+app.use("/api/admin/venues", adminVenueRouter);
 
 export default app;
