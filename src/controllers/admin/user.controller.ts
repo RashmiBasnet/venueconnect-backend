@@ -14,8 +14,8 @@ let adminUserService = new AdminUserService();
 export class AdminUserController {
     async createUser(req: Request, res: Response, next: NextFunction) {
         try {
-            const parsedData = CreateUserDto.safeParse(req.body); // validate request body
-            if (!parsedData.success) { // validation failed
+            const parsedData = CreateUserDto.safeParse(req.body);
+            if (!parsedData.success) {
                 return res.status(400).json(
                     { success: false, message: z.prettifyError(parsedData.error) }
                 )
@@ -53,14 +53,14 @@ export class AdminUserController {
     async updateUser(req: Request, res: Response, next: NextFunction) {
         try {
             const userId = req.params.id;
-            const parsedData = UpdateUserDto.safeParse(req.body); // validate request body
-            if (!parsedData.success) { // validation failed
+            const parsedData = UpdateUserDto.safeParse(req.body);
+            if (!parsedData.success) {
                 return res.status(400).json(
                     { success: false, message: z.prettifyError(parsedData.error) }
                 )
             }
-            
-            if(req.file){   
+
+            if (req.file) {
                 parsedData.data.profilePicture = `/uploads/${req.file.filename}`;
             }
             const updateData: UpdateUserDto = parsedData.data;

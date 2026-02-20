@@ -6,7 +6,6 @@ export const PackageSchema = z.object({
     name: z.string().trim().min(3, "Package name must be at least 3 characters"),
     description: z.string().optional(),
 
-    // optional images for a package (e.g. menu images)
     images: z.array(z.string()).optional(),
 
     pricing: z.object({
@@ -22,7 +21,6 @@ export const PackageSchema = z.object({
         })
         .optional(),
 
-    // what’s included in the package (decor, sound, catering, etc.)
     inclusions: z
         .union([z.array(z.string()), z.string()])
         .optional()

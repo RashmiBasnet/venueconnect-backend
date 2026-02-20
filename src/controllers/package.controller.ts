@@ -107,7 +107,6 @@ export class PackageController {
         }
     }
 
-    // (JSON update, no images)
     async updatePackage(req: Request, res: Response) {
         try {
             const packageId = req.params.id as string;

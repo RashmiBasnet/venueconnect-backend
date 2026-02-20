@@ -9,14 +9,12 @@ let packageRepository = new PackageRepository();
 
 export class PackageService {
     async createPackage(data: CreatePackageDto, files?: Express.Multer.File[]) {
-        // validate venueId
         if (!mongoose.Types.ObjectId.isValid(data.venueId)) {
             throw new HttpError(400, "Invalid venueId");
         }
 
         const images = files?.map((f) => f.filename) || [];
 
-        // convert string -> ObjectId for DB
         const venueObjectId = new mongoose.Types.ObjectId(data.venueId);
 
         const newPackage = await packageRepository.createPackage({
@@ -80,7 +78,6 @@ export class PackageService {
             throw new HttpError(404, "Package not found");
         }
 
-        // if venueId is passed in update, validate and convert
         if (data.venueId) {
             if (!mongoose.Types.ObjectId.isValid(data.venueId)) {
                 throw new HttpError(400, "Invalid venueId");
@@ -102,7 +99,6 @@ export class PackageService {
             throw new HttpError(404, "Package not found");
         }
 
-        // delete images from disk too
         const uploadDir = path.join(process.cwd(), "uploads");
         const images = (pkg as any).images || [];
 
@@ -121,7 +117,6 @@ export class PackageService {
         return ok;
     }
 
-    // ✅ like uploadProfilePicture, but for multiple package images
     async replacePackageImages(packageId: string, files?: Express.Multer.File[]) {
         if (!files || files.length === 0) {
             throw new HttpError(400, "Please upload at least one image");
@@ -132,7 +127,6 @@ export class PackageService {
             throw new HttpError(404, "Package not found");
         }
 
-        // delete old images if exists
         const uploadDir = path.join(process.cwd(), "uploads");
         const oldImages = (pkg as any).images || [];
 

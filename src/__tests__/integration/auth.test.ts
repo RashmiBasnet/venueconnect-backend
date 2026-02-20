@@ -32,7 +32,6 @@ describe("Authentication Integration Tests", () => {
             expect(res.body).toHaveProperty("success", true);
             expect(res.body).toHaveProperty("data");
 
-            // basic shape checks (avoid checking hashed password exactly)
             expect(res.body.data).toHaveProperty("_id");
             expect(res.body.data).toHaveProperty("email", testUser.email);
             expect(res.body.data).toHaveProperty("fullName", testUser.fullName);
@@ -52,7 +51,6 @@ describe("Authentication Integration Tests", () => {
 
             expect(res.status).toBe(400);
             expect(res.body).toHaveProperty("success", false);
-            // Your controller returns: { errors: z.prettifyError(...) }
             expect(res.body).toHaveProperty("errors");
         });
 

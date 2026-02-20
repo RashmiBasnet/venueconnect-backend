@@ -28,7 +28,6 @@ export const VenueSchema = z.object({
         .union([z.array(z.string()), z.string()])
         .optional()
         .transform((val) => {
-            // allow "Parking, AC" OR ["Parking","AC"]
             if (!val) return [];
             if (Array.isArray(val)) return val.map((x) => x.trim()).filter(Boolean);
             return val.split(",").map((x) => x.trim()).filter(Boolean);
