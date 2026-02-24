@@ -6,8 +6,8 @@ import { uploads } from "../../middleware/upload.middleware";
 const router = Router();
 const venueController = new VenueController();
 
-router.use(adminOnlyMiddleware);
 router.use(authorizedMiddleware);
+router.use(adminOnlyMiddleware);
 
 router.post(
     "/",
