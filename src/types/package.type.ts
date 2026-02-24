@@ -8,11 +8,7 @@ export const PackageSchema = z.object({
 
     images: z.array(z.string()).optional(),
 
-    pricing: z.object({
-        priceType: z.enum(["PER_PLATE", "FLAT"]),
-        price: z.coerce.number().min(0),
-        currency: z.enum(["NPR", "USD", "INR"]).default("NPR"),
-    }),
+    pricePerPlate: z.coerce.number().min(0),
 
     capacity: z
         .object({

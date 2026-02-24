@@ -10,11 +10,7 @@ const PackageSchema: Schema = new Schema(
 
         images: { type: [String], default: [] },
 
-        pricing: {
-            priceType: { type: String, enum: ["PER_PLATE", "FLAT"], required: true },
-            price: { type: Number, required: true, min: 0 },
-            currency: { type: String, enum: ["NPR", "USD", "INR"], default: "NPR" },
-        },
+        pricePerPlate: { type: Number, required: true, min: 0 },
 
         capacity: {
             minGuests: { type: Number, default: 1 },

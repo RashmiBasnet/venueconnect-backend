@@ -15,19 +15,7 @@ const VenueSchema: Schema = new Schema(
 
         images: { type: [String], default: [] },
 
-        pricing: {
-            baseType: {
-                type: String,
-                enum: ["PER_PLATE", "FLAT", "PER_HOUR"],
-                required: true,
-            },
-            basePrice: { type: Number, required: true, min: 0 },
-            currency: {
-                type: String,
-                enum: ["NPR", "USD", "INR"],
-                default: "NPR",
-            },
-        },
+        pricePerPlate: { type: Number, required: true, min: 0 },
 
         capacity: {
             minGuests: { type: Number, default: 1, min: 1 },

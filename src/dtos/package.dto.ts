@@ -5,7 +5,7 @@ export const CreatePackageDto = PackageSchema.pick({
     venueId: true,
     name: true,
     description: true,
-    pricing: true,
+    pricePerPlate: true,
     capacity: true,
     inclusions: true,
     isActive: true,

@@ -13,11 +13,7 @@ export const VenueSchema = z.object({
 
     images: z.array(z.string()).optional(),
 
-    pricing: z.object({
-        baseType: z.enum(["PER_PLATE", "FLAT", "PER_HOUR"]),
-        basePrice: z.coerce.number().min(0),
-        currency: z.enum(["NPR", "USD", "INR"]).default("NPR"),
-    }),
+    pricePerPlate: z.coerce.number().min(0),
 
     capacity: z.object({
         minGuests: z.coerce.number().min(1).default(1),
