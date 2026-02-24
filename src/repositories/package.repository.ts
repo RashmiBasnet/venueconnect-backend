@@ -1,5 +1,6 @@
 import { QueryFilter } from "mongoose";
 import { IPackage, PackageModel } from "../models/package.model";
+import { VenueModel } from "../models/venue.model";
 
 export interface IPackageRepository {
     createPackage(data: Partial<IPackage>): Promise<IPackage>;
@@ -46,10 +47,21 @@ export class PackageRepository implements IPackageRepository {
     }): Promise<{ packages: IPackage[]; totalPackages: number }> {
         const filter: QueryFilter<IPackage> = {};
 
-        if (search) {
+        if (search?.trim()) {
+            const regex = new RegExp(search.trim(), "i");
+
+            const venues = await VenueModel.find(
+                { name: { $regex: regex } },
+                { _id: 1 }
+            ).lean();
+
+            const venueIds = venues.map((v) => v._id);
+
             filter.$or = [
-                { name: { $regex: search, $options: "i" } },
-                { description: { $regex: search, $options: "i" } },
+                { name: { $regex: regex } },
+                { description: { $regex: regex } },
+                { inclusions: { $regex: regex } },
+                ...(venueIds.length ? [{ venueId: { $in: venueIds } }] : []),
             ];
         }
 
@@ -58,7 +70,7 @@ export class PackageRepository implements IPackageRepository {
                 .sort({ createdAt: -1 })
                 .skip((page - 1) * size)
                 .limit(size)
-                .populate("venueId", "name"),
+                .populate("venueId", "name address pricePerPlate capacity isActive images"),
             PackageModel.countDocuments(filter),
         ]);
 
@@ -66,7 +78,7 @@ export class PackageRepository implements IPackageRepository {
     }
 
     async getPackageById(id: string): Promise<IPackage | null> {
-        return await PackageModel.findById(id).populate("venueId", "name");
+        return await PackageModel.findById(id).populate("venueId", "name address pricePerPlate capacity isActive images");
     }
 
     async getPackagesByVenueId(

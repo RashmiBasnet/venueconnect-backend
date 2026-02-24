@@ -14,25 +14,24 @@ declare global {
 }
 let userRepository = new UserRepository;
 
-export const authorizedMiddleware = async(req: Request, res: Response, next: NextFunction) => {
-    try{
+export const authorizedMiddleware = async (req: Request, res: Response, next: NextFunction) => {
+    try {
         const authHeader = req.headers.authorization;
-        if(!authHeader || !authHeader.startsWith("Bearer")){
+        if (!authHeader || !authHeader.startsWith("Bearer")) {
             throw new HttpError(401, "Unauthorized, Header malformed");
         }
-        const token = authHeader.split(" ")[1]; 
-        if(!token){
+        const token = authHeader.split(" ")[1];
+        if (!token) {
             throw new HttpError(401, "Unauthorized, Token missing");
         }
         const decodedToken = jwt.verify(token, JWT_SECRET) as Record<string, any>;
-        if(!decodedToken || !decodedToken.id){
+        if (!decodedToken || !decodedToken.id) {
             throw new HttpError(401, "Unauthorized, Token invalid");
         }
         const user = await userRepository.getUserById(decodedToken.id);
-        if(!user){
+        if (!user) {
             throw new HttpError(401, "Unauthorized, User not found");
         }
-        // attach user to request object
         req.user = user;
         next();
     } catch (error: Error | any) {
@@ -43,8 +42,8 @@ export const authorizedMiddleware = async(req: Request, res: Response, next: Nex
 }
 
 export const adminOnlyMiddleware = (req: Request, res: Response, next: NextFunction) => {
-    try{
-        if(req.user && req.user.role === "admin") {
+    try {
+        if (req.user && req.user.role === "admin") {
             next();
         } else {
             throw new HttpError(403, "Forbidden, Admins only");
