@@ -14,6 +14,8 @@ import venueRouter from "./routes/venue.routes";
 import adminVenueRouter from "./routes/admin/venue.routes";
 import packageRouter from "./routes/package.routes";
 import adminPackageRouter from "./routes/admin/package.routes";
+import bookingRouter from "./routes/booking.routes";
+import adminBookingRouter from "./routes/admin/booking.routes";
 
 const app: Application = express();
 
@@ -42,5 +44,7 @@ app.use("/api/venues", venueRouter);
 app.use("/api/admin/venues", adminVenueRouter);
 app.use("/api/packages", packageRouter);
 app.use("/api/admin/packages", adminPackageRouter);
+app.use("/api/booking", bookingRouter);
+app.use("/api/admin/booking", adminBookingRouter);
 
 export default app;
