@@ -40,7 +40,6 @@ const BookingSchemaM: Schema = new Schema(
     { timestamps: true }
 );
 
-// indexes
 BookingSchemaM.index({ venueId: 1, eventDate: 1, status: 1 });
 BookingSchemaM.index({ bookedBy: 1, createdAt: -1 });
 

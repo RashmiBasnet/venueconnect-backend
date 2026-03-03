@@ -13,6 +13,7 @@
   "type": "commonjs",
   "dependencies": {
     "@types/nodemailer": "^7.0.9",
+    "axios": "^1.13.5",
     "bcryptjs": "^3.0.3",
     "cors": "^2.8.5",
     "dotenv": "^17.2.3",

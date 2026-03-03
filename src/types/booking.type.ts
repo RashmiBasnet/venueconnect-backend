@@ -24,12 +24,11 @@ export const BookingSchema = z.object({
 
     guests: z.coerce.number().int().min(1),
 
-    // pricing snapshot (server fills)
     pricePerPlate: z.coerce.number().min(0),
     totalPrice: z.coerce.number().min(0),
 
     status: z.enum(["pending", "confirmed", "cancelled", "completed"]).default("pending"),
-    paymentStatus: z.enum(["unpaid", "paid", "refunded"]).default("unpaid"),
+    paymentStatus: z.enum(["unpaid", "paid"]).default("unpaid"),
 
     contactName: z.string().trim().min(1),
     contactPhone: z.string().trim().min(6),

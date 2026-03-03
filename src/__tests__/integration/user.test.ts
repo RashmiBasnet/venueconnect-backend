@@ -161,7 +161,6 @@ describe("User Integration Tests", () => {
             expect(resetRes.body).toHaveProperty("success", true);
             expect(resetRes.body).toHaveProperty("message", "Password has been reset successfully.");
 
-            // verification that you can now login with new password
             const loginRes = await request(app).post("/api/auth/login").send({
                 email: testUser.email,
                 password: "newpass123",
