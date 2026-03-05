@@ -30,7 +30,6 @@ export const UpdateUserDto = UserSchema.pick(
 ).partial();
 export type UpdateUserDto = z.infer<typeof UpdateUserDto>;
 
-// Login
 export const LoginUserDto = z.object({
     email: z.email(),
     password: z.string().trim().min(6, "Password can't be less than 6 characters"),

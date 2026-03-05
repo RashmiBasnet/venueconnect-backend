@@ -28,10 +28,8 @@ describe("User Integration Tests", () => {
         const uploadDir = path.join(process.cwd(), "uploads");
         if (!fs.existsSync(uploadDir)) fs.mkdirSync(uploadDir, { recursive: true });
 
-        // register
         await request(app).post("/api/auth/register").send(testUser);
 
-        // login to get JWT
         const loginRes = await request(app).post("/api/auth/login").send({
             email: testUser.email,
             password: testUser.password,
@@ -147,7 +145,6 @@ describe("User Integration Tests", () => {
 
             expect(typeof html).toBe("string");
 
-            // extract token from link 
             const match = html.match(/token=([A-Za-z0-9._-]+)/);
             expect(match).not.toBeNull();
 

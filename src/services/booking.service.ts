@@ -24,7 +24,6 @@ export class BookingService {
         if (!venue) throw new HttpError(404, "Venue not found");
         if ((venue as any).isActive === false) throw new HttpError(400, "Venue is not active");
 
-        // pricing decision
         let pricePerPlate = (venue as any).pricePerPlate;
 
         if (data.packageId) {
@@ -39,7 +38,6 @@ export class BookingService {
             pricePerPlate = (pkg as any).pricePerPlate;
         }
 
-        // capacity check (venue capacity)
         const minGuests = (venue as any)?.capacity?.minGuests ?? 1;
         const maxGuests = (venue as any)?.capacity?.maxGuests ?? Number.MAX_SAFE_INTEGER;
 
@@ -49,7 +47,6 @@ export class BookingService {
         const eventDate = new Date(data.eventDate);
         if (Number.isNaN(eventDate.getTime())) throw new HttpError(400, "Invalid eventDate");
 
-        // conflict check
         const conflict = await bookingRepository.hasTimeConflict({
             venueId: data.venueId,
             eventDate,

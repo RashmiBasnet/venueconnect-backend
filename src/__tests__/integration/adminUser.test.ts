@@ -42,17 +42,14 @@ describe("Admin Users Integration Tests", () => {
 
         await UserModel.updateOne({ email: adminCreds.email }, { $set: { role: "admin" } });
 
-        // login admin
         const adminLogin = await request(app).post("/api/auth/login").send({
             email: adminCreds.email,
             password: adminCreds.password,
         });
         adminToken = adminLogin.body.token;
 
-        // register normal user
         await request(app).post("/api/auth/register").send(normalUserCreds);
 
-        // login normal user
         const userLogin = await request(app).post("/api/auth/login").send({
             email: normalUserCreds.email,
             password: normalUserCreds.password,

@@ -38,7 +38,6 @@ export class PaymentService {
     }
 
 
-    // Initiate Khalti payment for a booking
     initiateKhaltiPayment = async (
         userId: string,
         bookingId: string,
@@ -78,13 +77,11 @@ export class PaymentService {
             };
         }
 
-        // Khalti customer info
         const customerInfo = {
             name: user.fullName,
             email: user.email,
         };
 
-        // Initiate with Khalti
         const paymentData = await initiateKhaltiPayment({
             return_url: returnUrl,
             website_url: process.env.CLIENT_URL || "http://localhost:3000",

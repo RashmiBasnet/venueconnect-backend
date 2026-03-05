@@ -42,7 +42,6 @@ export class VenueService {
         const venue = await venueRepository.getVenueById(venueId);
         if (!venue) throw new HttpError(404, "Venue not found");
 
-        // delete old images if exist
         const oldImages = venue.images || [];
         if (oldImages.length) {
             const uploadDir = path.join(process.cwd(), "uploads");

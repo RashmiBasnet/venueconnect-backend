@@ -1,17 +1,16 @@
 import { CreateUserDto, UpdateUserDto } from "../../dtos/user.dto";
 import { UserRepository } from "../../repositories/user.repository";
-import  bcryptjs from "bcryptjs"
+import bcryptjs from "bcryptjs"
 import { HttpError } from "../../errors/http-error";
 
 let userRepository = new UserRepository();
 
 export class AdminUserService {
-    async createUser(data: CreateUserDto){
+    async createUser(data: CreateUserDto) {
         const emailCheck = await userRepository.getUserByEmail(data.email);
-        if(emailCheck){
+        if (emailCheck) {
             throw new HttpError(403, "Email already in use");
         }
-        // hash password
         const hashedPassword = await bcryptjs.hash(data.password, 10); // 10 - complexity
         data.password = hashedPassword;
 
@@ -33,27 +32,27 @@ export class AdminUserService {
         return { users, pagination };
     }
 
-    async deleteUser(id: string){
+    async deleteUser(id: string) {
         const user = await userRepository.getUserById(id);
-        if(!user){
+        if (!user) {
             throw new HttpError(404, "User not found");
         }
         const deleted = await userRepository.deleteOneUser(id);
         return deleted;
     }
 
-    async updateUser(id: string, updateData: UpdateUserDto){
+    async updateUser(id: string, updateData: UpdateUserDto) {
         const user = await userRepository.getUserById(id);
-        if(!user){
+        if (!user) {
             throw new HttpError(404, "User not found");
         }
         const updatedUser = await userRepository.updateOneUser(id, updateData);
         return updatedUser;
     }
 
-    async  getUserById(id: string){
+    async getUserById(id: string) {
         const user = await userRepository.getUserById(id);
-        if(!user){
+        if (!user) {
             throw new HttpError(404, "User not found");
         }
         return user;
