@@ -28,10 +28,8 @@ describe("User Integration Tests", () => {
         const uploadDir = path.join(process.cwd(), "uploads");
         if (!fs.existsSync(uploadDir)) fs.mkdirSync(uploadDir, { recursive: true });
 
-        // register
         await request(app).post("/api/auth/register").send(testUser);
 
-        // login to get JWT
         const loginRes = await request(app).post("/api/auth/login").send({
             email: testUser.email,
             password: testUser.password,
@@ -93,9 +91,9 @@ describe("User Integration Tests", () => {
     describe("PUT /api/user/profile/upload", () => {
         test("Should upload profile picture with valid token + file", async () => {
             const fakePng = Buffer.from([
-                0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a, // PNG signature
-                0x00, 0x00, 0x00, 0x0d, 0x49, 0x48, 0x44, 0x52, // IHDR
-                0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x01, // 1x1
+                0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a,
+                0x00, 0x00, 0x00, 0x0d, 0x49, 0x48, 0x44, 0x52,
+                0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x01,
                 0x08, 0x06, 0x00, 0x00, 0x00,
             ]);
 
@@ -147,7 +145,6 @@ describe("User Integration Tests", () => {
 
             expect(typeof html).toBe("string");
 
-            // extract token from link like: /reset-password?token=XXXX
             const match = html.match(/token=([A-Za-z0-9._-]+)/);
             expect(match).not.toBeNull();
 
@@ -161,7 +158,6 @@ describe("User Integration Tests", () => {
             expect(resetRes.body).toHaveProperty("success", true);
             expect(resetRes.body).toHaveProperty("message", "Password has been reset successfully.");
 
-            // verify you can now login with new password
             const loginRes = await request(app).post("/api/auth/login").send({
                 email: testUser.email,
                 password: "newpass123",

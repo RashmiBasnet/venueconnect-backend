@@ -10,6 +10,14 @@ console.log(process.env.PORT);
 import authRouter from "./routes/auth.routes";
 import userRouter from "./routes/user.routes";
 import adminUserRouter from "./routes/admin/user.routes";
+import venueRouter from "./routes/venue.routes";
+import adminVenueRouter from "./routes/admin/venue.routes";
+import packageRouter from "./routes/package.routes";
+import adminPackageRouter from "./routes/admin/package.routes";
+import bookingRouter from "./routes/booking.routes";
+import adminBookingRouter from "./routes/admin/booking.routes";
+import paymentRouter from "./routes/payment.routes";
+import adminPaymentRouter from "./routes/admin/payment.routes";
 
 const app: Application = express();
 
@@ -29,10 +37,18 @@ let corsOptions = {
 
 app.use(cors(corsOptions));
 
-app.use('/uploads', express.static(path.join(__dirname, '../uploads'))); // static file serving
+app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
 
 app.use('/api/auth', authRouter);
 app.use('/api/user', userRouter);
 app.use('/api/admin/users', adminUserRouter);
+app.use("/api/venues", venueRouter);
+app.use("/api/admin/venues", adminVenueRouter);
+app.use("/api/packages", packageRouter);
+app.use("/api/admin/packages", adminPackageRouter);
+app.use("/api/booking", bookingRouter);
+app.use("/api/admin/booking", adminBookingRouter);
+app.use("/api/payments", paymentRouter);
+app.use("/api/payments/admin", adminPaymentRouter);
 
 export default app;

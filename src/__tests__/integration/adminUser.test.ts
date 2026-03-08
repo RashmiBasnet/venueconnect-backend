@@ -31,32 +31,25 @@ describe("Admin Users Integration Tests", () => {
     let createdUserId = "";
 
     beforeAll(async () => {
-        // Ensure uploads dir exists (some multer setups require it)
         const uploadDir = path.join(process.cwd(), "uploads");
         if (!fs.existsSync(uploadDir)) fs.mkdirSync(uploadDir, { recursive: true });
 
-        // cleanup
         await UserModel.deleteMany({
             email: { $in: [adminCreds.email, normalUserCreds.email, userToCreate.email] },
         });
 
-        // register admin
         await request(app).post("/api/auth/register").send(adminCreds);
 
-        // force admin role (since register defaults role=user)
         await UserModel.updateOne({ email: adminCreds.email }, { $set: { role: "admin" } });
 
-        // login admin
         const adminLogin = await request(app).post("/api/auth/login").send({
             email: adminCreds.email,
             password: adminCreds.password,
         });
         adminToken = adminLogin.body.token;
 
-        // register normal user
         await request(app).post("/api/auth/register").send(normalUserCreds);
 
-        // login normal user
         const userLogin = await request(app).post("/api/auth/login").send({
             email: normalUserCreds.email,
             password: normalUserCreds.password,
@@ -126,7 +119,7 @@ describe("Admin Users Integration Tests", () => {
 
             expect(res.status).toBe(400);
             expect(res.body).toHaveProperty("success", false);
-            expect(res.body).toHaveProperty("message"); // prettified zod error
+            expect(res.body).toHaveProperty("message");
         });
     });
 
@@ -173,7 +166,7 @@ describe("Admin Users Integration Tests", () => {
         });
 
         test("Should return 404 for non-existing user", async () => {
-            const fakeId = "507f1f77bcf86cd799439011"; // valid ObjectId format
+            const fakeId = "507f1f77bcf86cd799439011";
             const res = await request(app)
                 .get(`/api/admin/users/${fakeId}`)
                 .set("Authorization", `Bearer ${adminToken}`);
@@ -199,7 +192,6 @@ describe("Admin Users Integration Tests", () => {
         });
 
         test("Admin should update user with image upload (optional)", async () => {
-            // router uses uploads.single("image")
             const fakePng = Buffer.from([
                 0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a,
                 0x00, 0x00, 0x00, 0x0d, 0x49, 0x48, 0x44, 0x52,
@@ -212,7 +204,6 @@ describe("Admin Users Integration Tests", () => {
                 .set("Authorization", `Bearer ${adminToken}`)
                 .attach("image", fakePng, { filename: "admin-avatar.png", contentType: "image/png" });
 
-            // Depending on your multer config, this should pass.
             expect([200, 400]).toContain(res.status);
 
             if (res.status === 200) {
@@ -250,7 +241,6 @@ describe("Admin Users Integration Tests", () => {
                 .delete(`/api/admin/users/${createdUserId}`)
                 .set("Authorization", `Bearer ${adminToken}`);
 
-            // your controller returns 404 with "User not found" when service returns falsy
             expect(res.status).toBe(404);
             expect(res.body).toHaveProperty("success", false);
             expect(res.body).toHaveProperty("message", "User not found");

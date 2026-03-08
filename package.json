@@ -5,7 +5,10 @@
   "main": "index.js",
   "scripts": {
     "dev": "npx nodemon --exec ts-node src/index.ts",
-    "test": "jest --verbose --detectOpenHandles"
+    "test": "jest --verbose --detectOpenHandles",
+    "test:unit": "jest --verbose --detectOpenHandles src/__tests__/unit --runInBand",
+    "test:integration": "jest --verbose --detectOpenHandles src/__tests__/integration --runInBand",
+    "test:coverage": "jest --verbose --detectOpenHandles --coverage --runInBand"
   },
   "keywords": [],
   "author": "",
@@ -13,6 +16,7 @@
   "type": "commonjs",
   "dependencies": {
     "@types/nodemailer": "^7.0.9",
+    "axios": "^1.13.5",
     "bcryptjs": "^3.0.3",
     "cors": "^2.8.5",
     "dotenv": "^17.2.3",

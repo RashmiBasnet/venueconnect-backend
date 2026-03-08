@@ -18,7 +18,7 @@ export class UserService {
         if (checkEmail) {
             throw new HttpError(403, "Email is already in use");
         }
-        const hashedPassword = await bcryptjs.hash(data.password, 10); // 10 complexity
+        const hashedPassword = await bcryptjs.hash(data.password, 10);
         data.password = hashedPassword;
         const newUser = await userRepository.createUser(data);
 
@@ -84,7 +84,6 @@ export class UserService {
             throw new HttpError(404, "User not found");
         }
 
-        // delete old file if exists
         const oldFileName = user.profilePicture;
         if (oldFileName) {
             const uploadDir = path.join(process.cwd(), "uploads");
